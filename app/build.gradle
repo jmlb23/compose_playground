@@ -1,0 +1,57 @@
+import com.github.jmlb23.mediumclone.Dependencies
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "com.github.jmlb23.mediumclone"
+        minSdkVersion 22
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        useIR = true
+    }
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Dependencies.Versions.ComposeVersion
+        kotlinCompilerVersion Dependencies.Versions.KotlinVersion
+    }
+
+
+}
+
+dependencies {
+    implementation(Dependencies.Compose.getAll)
+    implementation(Dependencies.Google.getAll)
+    testImplementation(Dependencies.VanillaTest.getAll)
+    androidTestImplementation(Dependencies.AndroidTest.getAll)
+    implementation(Dependencies.Androidx.getAll)
+    implementation(Dependencies.Retrofit.getAll)
+    implementation(Dependencies.Jetbrains.getAll)
+    implementation(Dependencies.Coil.getAll)
+    implementation(Dependencies.CoRedux.getAll)
+}
