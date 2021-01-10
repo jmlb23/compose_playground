@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.github.jmlb23.mediumclone"
-        minSdkVersion 22
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -53,5 +53,5 @@ dependencies {
     implementation(Dependencies.Retrofit.getAll)
     implementation(Dependencies.Jetbrains.getAll)
     implementation(Dependencies.Coil.getAll)
-    implementation(Dependencies.CoRedux.getAll)
+    implementation(Dependencies.Redux.getAll)
 }

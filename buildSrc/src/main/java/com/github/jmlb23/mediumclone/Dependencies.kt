@@ -16,13 +16,16 @@ object Dependencies {
         const val Espresso = "3.3.0"
         const val Junit = "4.13.1"
         const val GoogleMaterial = "1.2.1"
-        const val CoRedux = "1.1.1"
+        const val Redux = "1.2.6"
+        const val Interceptor = "4.9.0"
     }
 
     object Retrofit {
         private const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.RetrofitVersion}"
         private const val gson = "com.squareup.retrofit2:converter-gson:${Versions.RetrofitVersion}"
-        val getAll = listOf(retrofit, gson)
+        private const val okHttpInterceptor ="com.squareup.okhttp3:logging-interceptor:${Versions.Interceptor}"
+
+        val getAll = listOf(retrofit, gson, okHttpInterceptor)
     }
 
     object Compose {
@@ -74,8 +77,7 @@ object Dependencies {
         val getAll = listOf(coil)
     }
 
-    object CoRedux{
-        private const val redux = "com.freeletics.coredux:core:${Versions.CoRedux}"
-        val getAll = listOf(redux)
+    object Redux{
+        val getAll = emptyList<String>()
     }
 }
