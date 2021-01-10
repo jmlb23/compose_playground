@@ -14,8 +14,7 @@ fun Feed() {
     val scope = AmbientCoroutineScope.current
     val store = AmbientStore.current
     val feed = store
-        .subcribe
-        .map { it.feed?.article.orEmpty() }
+        .select { it.feed?.article.orEmpty() }
         .collectAsState(initial = emptyList())
 
     onActive {

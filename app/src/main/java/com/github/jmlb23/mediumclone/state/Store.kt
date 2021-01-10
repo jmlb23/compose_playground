@@ -2,6 +2,8 @@ package com.github.jmlb23.mediumclone.state
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 interface Store<S, A, E> {
     val enviroment: E
@@ -9,6 +11,8 @@ interface Store<S, A, E> {
     suspend fun dispatch(action: A)
 
     fun getState(): S
+
+    fun <T> select(selector: suspend (S) -> T): Flow<T>
 
     val subcribe: Flow<S>
 }
@@ -48,6 +52,7 @@ fun <S, A, E> createStore(
             appEnviroment
 
         override fun getState(): S = _state.value
+        override fun <T> select(selector: suspend (S) -> T): Flow<T> = _state.map(selector).distinctUntilChanged()
 
     }
 
