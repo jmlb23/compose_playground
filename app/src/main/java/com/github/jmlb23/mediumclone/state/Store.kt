@@ -20,7 +20,7 @@ interface Store<S, A, E> {
 
 fun <S, A, E> createStore(
     initalState: S,
-    middleware: (suspend (Store<S, A, E>, suspend (A) -> Unit, A) -> Unit),
+    middleware: (suspend (Store<S, A, E>, suspend (A) -> A, A) -> A)?,
     reducer: (S, A) -> S,
     appEnviroment: E
 ) =
@@ -35,14 +35,17 @@ fun <S, A, E> createStore(
 
         private suspend fun applyMiddlewareOrReducer(
             action: A,
-            middleware: (suspend (Store<S, A, E>, suspend (A) -> Unit, A) -> Unit)
+            middleware: (suspend (Store<S, A, E>, suspend (A) -> A, A) -> A)?
         ): S {
-            middleware(
-                this,
-                ::dispatch,
-                action
-            )
-            return reducer(_state.value, action)
+            return middleware?.let {
+                reducer(
+                    _state.value, it(
+                        this,
+                        { it },
+                        action
+                    )
+                )
+            } ?: reducer(_state.value, action)
 
         }
 
@@ -52,7 +55,8 @@ fun <S, A, E> createStore(
             appEnviroment
 
         override fun getState(): S = _state.value
-        override fun <T> select(selector: suspend (S) -> T): Flow<T> = _state.map(selector).distinctUntilChanged()
+        override fun <T> select(selector: suspend (S) -> T): Flow<T> =
+            _state.map(selector).distinctUntilChanged()
 
     }
 

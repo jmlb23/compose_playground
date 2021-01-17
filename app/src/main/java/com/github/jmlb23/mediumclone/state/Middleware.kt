@@ -5,10 +5,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-fun <S, A, E> combineMiddlewares(vararg middleware: suspend (Store<S, A, E>, suspend (A) -> Unit, A) -> Unit): suspend (Store<S, A, E>, suspend (A) -> Unit, A) -> Unit {
+fun <S, A, E> combineMiddlewares(
+    vararg middleware: suspend (Store<S, A, E>, suspend (A) -> A, A) -> A
+): suspend (Store<S, A, E>, suspend (A) -> A, A) -> A {
     return middleware.iterator().asSequence()
         .reduce { acc, new ->
-            { store: Store<S, A, E>, next: suspend (A) -> Unit, a: A ->
+            { store: Store<S, A, E>, next: suspend (A) -> A, a: A ->
                 acc(store,{ new(store,next,it) },a)
             }
         }
@@ -16,29 +18,58 @@ fun <S, A, E> combineMiddlewares(vararg middleware: suspend (Store<S, A, E>, sus
 
 suspend fun middlewarePagination(
     store: Store<AppState, AppActions, AppEnviroment>,
-    dispatcher: suspend (AppActions) -> Unit,
+    dispatcher: suspend (AppActions) -> AppActions,
     action: AppActions
-): Unit = withContext(Dispatchers.IO) {
+): AppActions = withContext(Dispatchers.IO) {
     val environment = store.enviroment
     val old = store.getState()
     when (action) {
         AppActions.FeedActions.ChangePageAction -> {
-            Log.d("MIDDLEWARE_API", "1")
             val pages = environment.factories.getArticlesService()
                 .getArticles(limit = 10, offset = (old.feed?.page ?: 0) * 10)
-            dispatcher(AppActions.FeedActions.SetPagesAction(pages.articles))
+            return@withContext dispatcher(AppActions.FeedActions.SetPagesAction(pages.articles))
         }
-        else -> Unit
+        else -> return@withContext dispatcher(action)
+    }
+}
+
+suspend fun middlewareDetailArticle(
+    store: Store<AppState, AppActions, AppEnviroment>,
+    dispatcher: suspend (AppActions) -> AppActions,
+    action: AppActions
+): AppActions = withContext(Dispatchers.IO) {
+    val environment = store.enviroment
+    when (action) {
+        is AppActions.DetailActions.GetDetail -> {
+            val pages = environment.factories.getArticlesService()
+                .getArticle(action.slug)
+            return@withContext dispatcher(AppActions.DetailActions.SetArticle(pages.article))
+        }
+        else -> return@withContext dispatcher(action)
+    }
+}
+
+suspend fun middlewareDetailComment(
+    store: Store<AppState, AppActions, AppEnviroment>,
+    dispatcher: suspend (AppActions) -> AppActions,
+    action: AppActions
+): AppActions = withContext(Dispatchers.IO) {
+    val environment = store.enviroment
+    when (action) {
+        is AppActions.DetailActions.GetDetail -> {
+            val pages = environment.factories.getCommentsService()
+                .getArticleComments(action.slug)
+            return@withContext dispatcher(AppActions.DetailActions.SetComments(pages.comments))
+        }
+        else -> return@withContext dispatcher(action)
     }
 }
 
 suspend fun middlewareLogger(
     store: Store<AppState, AppActions, AppEnviroment>,
-    dispatcher: suspend (AppActions) -> Unit,
+    dispatcher: suspend (AppActions) -> AppActions,
     action: AppActions
-) {
-    val environment = store.enviroment
-    val state = store.getState()
-    Log.d("MIDDLEWARE_LOGGER", "state: ${environment.jsonSerializer.toJson(state)}")
-    dispatcher(action)
+) : AppActions{
+    Log.d("MIDDLEWARE_LOGGER", "action: ${action.toString()}")
+    return dispatcher(action)
 }

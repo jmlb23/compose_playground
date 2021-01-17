@@ -26,7 +26,9 @@ class MainActivity : AppCompatActivity() {
             initalState = AppState(),
             appEnviroment = AppEnviroment(Factories, scope = scope, jsonSerializer = GsonBuilder().setPrettyPrinting().create()),
             reducer = ::mainReducer,
-            middleware = combineMiddlewares(::middlewareLogger,::middlewarePagination)
+            middleware = combineMiddlewares(::middlewareLogger,::middlewarePagination,
+                ::middlewareDetailArticle, ::middlewareDetailComment
+            )
         )
 
         super.onCreate(savedInstanceState)
