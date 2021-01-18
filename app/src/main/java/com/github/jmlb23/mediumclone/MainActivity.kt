@@ -13,22 +13,24 @@ import com.github.jmlb23.mediumclone.screens.home.Home
 import com.github.jmlb23.mediumclone.screens.splash.Splash
 import com.github.jmlb23.mediumclone.state.*
 import com.github.jmlb23.mediumclone.ui.MediumCloneTheme
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.plus
-import kotlinx.serialization.json.Json
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val scope = lifecycleScope + CoroutineExceptionHandler({ ctx, ex -> throw  ex })
         val store = createStore(
             initalState = AppState(),
-            appEnviroment = AppEnviroment(Factories, scope = scope, jsonSerializer = GsonBuilder().setPrettyPrinting().create()),
+            appEnviroment = AppEnviroment(
+                Factories,
+                scope = scope,
+                jsonSerializer = GsonBuilder().setPrettyPrinting().create()
+            ),
             reducer = ::mainReducer,
-            middleware = combineMiddlewares(::middlewareLogger,::middlewarePagination,
-                ::middlewareDetailArticle, ::middlewareDetailComment
-            )
+            middleware =
+            applyMiddleware(::middlewareLogger, ::middlewarePagination, ::middlewareDetailArticle, ::middlewareDetailComment)
+
         )
 
         super.onCreate(savedInstanceState)

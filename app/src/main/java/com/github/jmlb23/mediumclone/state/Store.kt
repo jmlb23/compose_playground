@@ -1,8 +1,8 @@
 package com.github.jmlb23.mediumclone.state
 
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 interface Store<S, A, E> {
@@ -17,13 +17,15 @@ interface Store<S, A, E> {
     val subcribe: Flow<S>
 }
 
+typealias Reducer<S, A> = (S, A) -> S
+typealias Middleware<S, A, E> = ((Store<S, A, E>, suspend (A) -> Unit, A) -> Job)
 
 fun <S, A, E> createStore(
     initalState: S,
-    middleware: (suspend (Store<S, A, E>, suspend (A) -> A, A) -> A)?,
-    reducer: (S, A) -> S,
+    reducer: Reducer<S, A>,
+    middleware: Middleware<S, A, E>,
     appEnviroment: E
-) =
+): Store<S, A, E> =
     object : Store<S, A, E> {
 
         private val _state = MutableStateFlow(initalState)
@@ -33,18 +35,13 @@ fun <S, A, E> createStore(
         }
 
 
-        private suspend fun applyMiddlewareOrReducer(
+        private fun applyMiddlewareOrReducer(
             action: A,
-            middleware: (suspend (Store<S, A, E>, suspend (A) -> A, A) -> A)?
+            middleware: Middleware<S, A, E>?
         ): S {
-            return middleware?.let {
-                reducer(
-                    _state.value, it(
-                        this,
-                        { it },
-                        action
-                    )
-                )
+            return middleware?.let { x ->
+                middleware(this, { }, action)
+                reducer(_state.value, action)
             } ?: reducer(_state.value, action)
 
         }
@@ -56,7 +53,8 @@ fun <S, A, E> createStore(
 
         override fun getState(): S = _state.value
         override fun <T> select(selector: suspend (S) -> T): Flow<T> =
-            _state.map(selector).distinctUntilChanged()
+            _state.map(selector)
+
 
     }
 

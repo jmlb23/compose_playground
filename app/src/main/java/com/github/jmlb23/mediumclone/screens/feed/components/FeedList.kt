@@ -11,7 +11,7 @@ import androidx.navigation.compose.navigate
 import com.github.jmlb23.mediumclone.data.models.Article
 
 @Composable
-fun FeedList(feeds: List<Article>, controller: NavHostController,add: () -> Unit, ) {
+fun FeedList(feeds: List<Article>, controller: NavHostController,add: () -> Unit) {
     LazyColumn {
         items(feeds) {
             Box(modifier = Modifier.clickable(onClick = { controller.navigate("/feed/${it.slug}") })) {
