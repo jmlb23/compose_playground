@@ -10,6 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.github.jmlb23.mediumclone.AmbientCoroutineScope
 import com.github.jmlb23.mediumclone.AmbientStore
 import com.github.jmlb23.mediumclone.state.AppActions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 
@@ -17,8 +19,8 @@ import kotlinx.coroutines.launch
 fun FeedDetail(slug: String?){
     val store = AmbientStore.current
     val coroutineContext = AmbientCoroutineScope.current
-    val article = store.select { it.detail.article }.collectAsState(initial = null)
-    val comments = store.select { it.detail.comments }.collectAsState(initial = emptyList())
+    val article = store.select { it.detail.article }.flowOn(Dispatchers.IO).collectAsState(initial = null)
+    val comments = store.select { it.detail.comments }.flowOn(Dispatchers.IO).collectAsState(initial = emptyList())
 
     onCommit{
         if (slug != null) {

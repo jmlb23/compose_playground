@@ -1,8 +1,8 @@
 package com.github.jmlb23.mediumclone.state
 
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 interface Store<S, A, E> {
@@ -18,32 +18,30 @@ interface Store<S, A, E> {
 }
 
 typealias Reducer<S, A> = (S, A) -> S
-typealias Middleware<S, A, E> = ((Store<S, A, E>, suspend (A) -> Unit, A) -> Job)
+typealias Middleware<S, A, E> = suspend ((Store<S, A, E>, suspend (A) -> Unit, A) -> Unit)
 
 fun <S, A, E> createStore(
     initalState: S,
     reducer: Reducer<S, A>,
-    middleware: Middleware<S, A, E>,
+    middleware: List<Middleware<S, A, E>>,
     appEnviroment: E
 ): Store<S, A, E> =
     object : Store<S, A, E> {
 
         private val _state = MutableStateFlow(initalState)
 
-        override suspend fun dispatch(action: A) {
-            _state.emit(applyMiddlewareOrReducer(action, middleware))
+        private val _dispatch: (suspend (A) -> Unit) = middleware
+            .reversed()
+            .foldRight({ defaultDispatch(it) }) { middleware, dispatchFunction ->
+                { x: A -> middleware(this, dispatchFunction, x) }
+            }
+
+        fun defaultDispatch(action: A) {
+            this._state.value = reducer(this._state.value,action)
         }
 
-
-        private fun applyMiddlewareOrReducer(
-            action: A,
-            middleware: Middleware<S, A, E>?
-        ): S {
-            return middleware?.let { x ->
-                middleware(this, { }, action)
-                reducer(_state.value, action)
-            } ?: reducer(_state.value, action)
-
+        override suspend fun dispatch(action: A) {
+            _dispatch(action)
         }
 
         override val subcribe: Flow<S> = _state
@@ -53,7 +51,7 @@ fun <S, A, E> createStore(
 
         override fun getState(): S = _state.value
         override fun <T> select(selector: suspend (S) -> T): Flow<T> =
-            _state.map(selector)
+            _state.map(selector).distinctUntilChanged()
 
 
     }

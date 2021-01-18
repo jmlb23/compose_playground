@@ -16,7 +16,7 @@ object Dependencies {
         const val Espresso = "3.3.0"
         const val Junit = "4.13.1"
         const val GoogleMaterial = "1.2.1"
-        const val Redux = "1.1.1"
+        const val Redux = "1.0.4"
         const val Interceptor = "4.9.0"
     }
 
@@ -78,7 +78,7 @@ object Dependencies {
     }
 
     object Redux{
-        private const val redux = "com.freeletics.coredux:core:${Versions.Redux}"
+        private const val redux = "org.rekotlin:rekotlin:${Versions.Redux}"
         val getAll = listOf(redux)
     }
 }

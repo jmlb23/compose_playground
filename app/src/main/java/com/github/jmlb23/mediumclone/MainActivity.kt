@@ -29,8 +29,7 @@ class MainActivity : AppCompatActivity() {
             ),
             reducer = ::mainReducer,
             middleware =
-            applyMiddleware(::middlewareLogger, ::middlewarePagination, ::middlewareDetailArticle, ::middlewareDetailComment)
-
+            listOf(::middlewareLogger, ::middlewarePagination, ::middlewareDetailArticle, ::middlewareDetailComment)
         )
 
         super.onCreate(savedInstanceState)
