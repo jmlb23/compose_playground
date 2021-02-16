@@ -23,7 +23,7 @@ fun Home() {
     Column (modifier = Modifier.fillMaxWidth(1f).then(Modifier.fillMaxHeight(1f)),verticalArrangement = Arrangement.Bottom) {
         Box(modifier = Modifier.fillMaxWidth(1f).weight(8f,true)){
             NavHost(navController = controller, startDestination = "/feed") {
-                composable("/feed/{slug}") { FeedDetail(it.arguments?.getString("slug")) }
+                composable("/feed/{slug}") { FeedDetail(it.arguments?.getString("slug") ?: "") }
                 composable("/feed") { Feed(controller) }
                 composable("/example2") { Text("example2", color = Color.Black) }
                 composable("/example3") { Text("example3", color = Color.Black) }
