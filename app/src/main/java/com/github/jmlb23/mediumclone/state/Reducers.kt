@@ -1,6 +1,5 @@
 package com.github.jmlb23.mediumclone.state
 
-
 fun mainReducer(state: AppState, actions: AppActions): AppState =
     state.copy(
         feed = reducerScreenData(
@@ -15,8 +14,8 @@ fun mainReducer(state: AppState, actions: AppActions): AppState =
 
 fun reducerScreenData(partialState: FeedState, actions: AppActions): FeedState =
     when (actions) {
-        AppActions.FeedActions.ChangePageAction -> partialState.copy(page = partialState.page?.plus(1) ?: 0)
-        is AppActions.FeedActions.SetPagesAction -> partialState.copy(article = partialState.article.orEmpty() + (actions.value))
+        AppActions.FeedActions.ChangePageAction -> partialState.copy(page = partialState.page + 1 )
+        is AppActions.FeedActions.SetPagesAction -> partialState.copy(article = partialState.article + (actions.value))
         else -> partialState
     }
 

@@ -7,19 +7,19 @@ import com.github.jmlb23.mediumclone.AmbientStore
 import com.github.jmlb23.mediumclone.screens.feed.components.FeedList
 import com.github.jmlb23.mediumclone.state.AppActions
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @Composable
 fun Feed(controller: NavHostController) {
-    val scope = AmbientCoroutineScope.current
     val store = AmbientStore.current
+    val scope = AmbientCoroutineScope.current
     val feed = store
-        .select { it.feed.article.orEmpty() }.flowOn(Dispatchers.IO)
-        .collectAsState(initial = emptyList(),scope.coroutineContext)
+        .select { it.feed.article }.distinctUntilChanged()
+        .collectAsState(initial = emptyList())
 
     FeedList(feeds = feed.value,controller = controller) {
-        scope.launch {
+        scope.launch(Dispatchers.Main){
             store.dispatch(AppActions.FeedActions.ChangePageAction)
         }
     }

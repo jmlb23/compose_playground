@@ -18,27 +18,32 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.plus
 
 class MainActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        val scope = lifecycleScope + CoroutineExceptionHandler({ ctx, ex -> throw  ex })
+        super.onCreate(savedInstanceState)
         val store = createStore(
             initalState = AppState(),
             appEnviroment = AppEnviroment(
                 Factories,
-                scope = scope,
+                scope = lifecycleScope + CoroutineExceptionHandler({ ctx, ex -> throw  ex }),
                 jsonSerializer = GsonBuilder().setPrettyPrinting().create()
             ),
             reducer = ::mainReducer,
             middleware =
-            listOf(::middlewareLogger, ::middlewarePagination, ::middlewareDetailArticle, ::middlewareDetailComment)
+            listOf(
+                middlewarePagination,
+                middlewareDetailArticle,
+                middlewareDetailComment,
+                middlewareLogger,
+            )
         )
-
-        super.onCreate(savedInstanceState)
         setContent {
             MediumCloneTheme {
                 val controller = rememberNavController()
                 Providers(
                     AmbientNavHostController provides controller,
-                    AmbientCoroutineScope provides scope,
+                    AmbientCoroutineScope provides lifecycleScope + CoroutineExceptionHandler({ ctx, ex -> throw  ex }),
                     AmbientStore provides store
                 ) {
                     NavHost(navController = controller, startDestination = "/splash", builder = {
@@ -49,5 +54,10 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 }

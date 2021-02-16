@@ -79,6 +79,6 @@ object Dependencies {
 
     object Redux{
         private const val redux = "org.rekotlin:rekotlin:${Versions.Redux}"
-        val getAll = listOf(redux)
+        val getAll = emptyList<String>()
     }
 }

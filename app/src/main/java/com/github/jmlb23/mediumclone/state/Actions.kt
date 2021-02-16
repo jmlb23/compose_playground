@@ -4,13 +4,13 @@ import com.github.jmlb23.mediumclone.data.models.Article
 import com.github.jmlb23.mediumclone.data.models.Comment
 
 
-sealed class AppActions{
-    sealed class FeedActions : AppActions(){
-        object ChangePageAction : FeedActions()
-        data class SetPagesAction(val value: List<Article>) : FeedActions()
+sealed class AppActions(open val name: String) {
+    sealed class FeedActions(override val name: String) : AppActions("FeedActions") {
+        object ChangePageAction : FeedActions("ChangePageAction")
+        data class SetPagesAction(val value: List<Article>) : FeedActions("SetPagesAction")
     }
 
-    sealed class DetailActions : AppActions(){
+    sealed class DetailActions : AppActions("DetailActions") {
         data class GetDetail(val slug: String) : DetailActions()
         data class SetArticle(val article: Article) : DetailActions()
         data class SetComments(val value: List<Comment>) : DetailActions()

@@ -19,18 +19,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun Home() {
     val controller = rememberNavController()
-    val store = AmbientStore.current
-    val coroutineContext = AmbientCoroutineScope.current
-
-    onActive {
-        val job = coroutineContext.launch {
-            store.dispatch(AppActions.FeedActions.ChangePageAction)
-        }
-
-        onDispose {
-            job.cancel()
-        }
-    }
 
     Column (modifier = Modifier.fillMaxWidth(1f).then(Modifier.fillMaxHeight(1f)),verticalArrangement = Arrangement.Bottom) {
         Box(modifier = Modifier.fillMaxWidth(1f).weight(8f,true)){
