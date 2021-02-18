@@ -1,6 +1,5 @@
 package com.github.jmlb23.mediumclone.state
 
-import android.util.Log
 import kotlinx.coroutines.flow.*
 
 fun <S : Any, A : Any, E> createStore(
@@ -13,14 +12,15 @@ fun <S : Any, A : Any, E> createStore(
 
         private val _state = MutableStateFlow(initalState)
 
-        private val _dispatch: Dispatch<A> =
+        private val _dispatch: Dispatch<A> by lazy {
             middleware.reversed().fold({ x -> defaultDispatch(x) }) { acc, next ->
-                next(this.replaceDispatcher(acc))(acc)
+                next { _dispatch(it) }(this)(acc)
             }
-
+        }
 
         suspend fun defaultDispatch(action: A) {
-            _state.emit(reducer(_state.value, action))
+            val state = reducer(_state.value, action)
+            _state.emit(state)
         }
 
         override val dispatch: Dispatch<A> = _dispatch
@@ -31,8 +31,7 @@ fun <S : Any, A : Any, E> createStore(
         override fun <T> select(selector: suspend (S) -> T): Flow<T> =
             _state.map(selector)
 
-        override val state: S
-            get() = _state.value
+        override fun state(): S = _state.value
 
         override val enviroment: E = appEnviroment
 

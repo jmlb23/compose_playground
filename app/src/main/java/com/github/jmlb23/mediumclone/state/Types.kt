@@ -11,7 +11,7 @@ interface Store<S, A, E> {
 
     val subscribe: Flow<S>
 
-    val state: S
+    fun state(): S
 
     val enviroment: E
 
@@ -21,4 +21,4 @@ typealias Dispatch<A> = suspend (A) -> Unit
 
 typealias Reducer<S, A> = (S, A) -> S
 
-typealias Middleware<S, A, E> = (Store<S,A,E>) -> (Dispatch<A>) -> Dispatch<A>
+typealias Middleware<S, A, E> = (Dispatch<A>) -> (Store<S,A,E>) -> (Dispatch<A>) -> Dispatch<A>

@@ -14,7 +14,11 @@ fun mainReducer(state: AppState, actions: AppActions): AppState =
 
 fun reducerScreenData(partialState: FeedState, actions: AppActions): FeedState =
     when (actions) {
-        AppActions.FeedActions.ChangePageAction -> partialState.copy(page = partialState.page + 1 )
+        AppActions.FeedActions.ChangePageAction -> {
+            val old = partialState.page
+            val new = old + 1
+            partialState.copy(page = new)
+        }
         is AppActions.FeedActions.SetPagesAction -> partialState.copy(article = partialState.article + (actions.value))
         else -> partialState
     }

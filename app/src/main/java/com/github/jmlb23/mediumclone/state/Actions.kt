@@ -7,6 +7,7 @@ import com.github.jmlb23.mediumclone.data.models.Comment
 sealed class AppActions(open val name: String) {
     sealed class FeedActions(override val name: String) : AppActions("FeedActions") {
         object ChangePageAction : FeedActions("ChangePageAction")
+        object GetPages : FeedActions("ChangePageAction")
         data class SetPagesAction(val value: List<Article>) : FeedActions("SetPagesAction")
     }
 
