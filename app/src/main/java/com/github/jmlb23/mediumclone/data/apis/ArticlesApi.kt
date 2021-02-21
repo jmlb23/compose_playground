@@ -1,7 +1,6 @@
 package com.github.jmlb23.mediumclone.data.apis
 
 import com.github.jmlb23.mediumclone.data.models.*
-import io.reactivex.Completable
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -24,7 +23,7 @@ interface ArticlesApi {
     @DELETE("articles/{slug}")
     suspend fun deleteArticle(
         @retrofit2.http.Path("slug") slug: String
-    ): Completable
+    ): Unit
 
     @Headers(
       "Content-Type: application/json"

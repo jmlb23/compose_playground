@@ -4,19 +4,18 @@ object Dependencies {
 
     object Versions {
         const val RetrofitVersion = "2.9.0"
-        const val ComposeVersion = "1.0.0-alpha09"
-        const val ComposeNavigation = "1.0.0-alpha04"
+        const val ComposeVersion = "1.0.0-alpha12"
+        const val ComposeNavigation = "1.0.0-alpha07"
         const val AndroidxCore = "1.3.2"
         const val AppCompat = "1.2.0"
         const val Lifecycle = "2.3.0-beta01"
-        const val KotlinVersion = "1.4.21"
+        const val KotlinVersion = "1.4.30"
         const val KotlinSerialization = "1.0.1"
         const val KotlinDateTime = "0.1.0"
         const val AndroidxJunit = "1.1.2"
         const val Espresso = "3.3.0"
         const val Junit = "4.13.1"
         const val GoogleMaterial = "1.2.1"
-        const val Redux = "1.0.4"
         const val Interceptor = "4.9.0"
     }
 
@@ -30,22 +29,23 @@ object Dependencies {
 
     object Compose {
         private const val runtime =
-            "androidx.compose.runtime:runtime-rxjava2:${Versions.ComposeVersion}"
+            "androidx.compose.runtime:runtime:${Versions.ComposeVersion}"
         private const val ui = "androidx.compose.ui:ui:${Versions.ComposeVersion}"
         private const val material = "androidx.compose.material:material:${Versions.ComposeVersion}"
         private const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.ComposeVersion}"
         private const val navigation = "androidx.navigation:navigation-compose:${Versions.ComposeNavigation}"
-
-        val getAll = listOf(runtime, ui, material, uiTooling, navigation)
+        private const val foundation = "androidx.compose.foundation:foundation:${Versions.ComposeVersion}"
+        val getAll = listOf(material, navigation, foundation, ui, uiTooling, runtime)
 
     }
 
     object Androidx {
+        private const val activity = "androidx.activity:activity-compose:1.3.0-alpha02"
         private const val core = "androidx.core:core-ktx:${Versions.AndroidxCore}"
         private const val appCompat = "androidx.appcompat:appcompat:${Versions.AppCompat}"
         private const val lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Lifecycle}"
 
-        val getAll = listOf(core, appCompat, lifecycle)
+        val getAll = listOf(core, appCompat, lifecycle, activity)
     }
 
     object Jetbrains{
@@ -73,12 +73,7 @@ object Dependencies {
     }
 
     object Coil {
-        private const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.4.0"
+        private const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.5.1"
         val getAll = listOf(coil)
-    }
-
-    object Redux{
-        private const val redux = "org.rekotlin:rekotlin:${Versions.Redux}"
-        val getAll = emptyList<String>()
     }
 }

@@ -28,12 +28,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-        useIR = true
-    }
+
     buildFeatures {
         compose true
+        buildConfig false
+        aidl false
+        renderScript false
+        resValues false
+        shaders false
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+        useIR = true
     }
 
     composeOptions {
@@ -41,6 +48,19 @@ android {
         kotlinCompilerVersion Dependencies.Versions.KotlinVersion
     }
 
+    configurations {
+        all {
+            exclude group: "androidx.compose.runtime", module: "runtime-saved-instance-state"
+        }
+    }
+
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
+        }
+    }
 
 }
 
@@ -53,5 +73,4 @@ dependencies {
     implementation(Dependencies.Retrofit.getAll)
     implementation(Dependencies.Jetbrains.getAll)
     implementation(Dependencies.Coil.getAll)
-    implementation(Dependencies.Redux.getAll)
 }

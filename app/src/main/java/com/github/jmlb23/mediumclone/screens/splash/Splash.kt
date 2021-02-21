@@ -6,9 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.onCommit
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
@@ -24,15 +25,15 @@ fun Splash() {
     val coroutineScope = AmbientCoroutineScope.current
 
     Box(modifier = Modifier.background(MaterialTheme.colors.primary).fillMaxWidth(1f).fillMaxHeight(1f)) {
-        Image(imageVector = vectorResource(
+        Image(painter = painterResource(
                 R.drawable.ic_launcher_foreground
-            ),
-            Modifier.height(100.dp).width(100.dp).align(Alignment.Center)
+            ),"",
+            modifier = Modifier.height(100.dp).width(100.dp).align(Alignment.Center),
         )
         Text(text = "Version 1.0.0",modifier = Modifier.align(Alignment.BottomCenter),color = MaterialTheme.colors.primaryVariant)
     }
 
-    onCommit(callback = {
+    DisposableEffect(key1 = null) {
         val job = coroutineScope.launch {
             delay(2000)
             navHostController.navigate("/home")
@@ -40,6 +41,6 @@ fun Splash() {
         onDispose {
             job.cancel()
         }
-    })
+    }
 }
 

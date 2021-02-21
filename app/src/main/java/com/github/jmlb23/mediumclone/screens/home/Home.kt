@@ -32,23 +32,23 @@ fun Home() {
         }
         BottomNavigation {
             BottomNavigationItem(
-                icon = { Icon(Icons.Default.Home) },
+                icon = { Icon(Icons.Default.Home, "Home") },
                 selected = true,
                 onClick = { controller.navigate("/feed") })
             BottomNavigationItem(
-                icon = { Icon(Icons.Default.Favorite) },
+                icon = { Icon(Icons.Default.Favorite, "Favs") },
                 selected = false,
                 onClick = { controller.navigate("/example2") })
             BottomNavigationItem(
-                icon = { Icon(Icons.Default.Add) },
+                icon = { Icon(Icons.Default.Add, "Add") },
                 selected = false,
                 onClick = { controller.navigate("/example3") })
             BottomNavigationItem(
-                icon = { Icon(Icons.Default.Notifications) },
+                icon = { Icon(Icons.Default.Notifications, "Notifications") },
                 selected = false,
                 onClick = { controller.navigate("/example4") })
             BottomNavigationItem(
-                icon = { Icon(Icons.Default.Person) },
+                icon = { Icon(Icons.Default.Person, "Person") },
                 selected = false,
                 onClick = { controller.navigate("/example4") })
         }
