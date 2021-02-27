@@ -4,19 +4,19 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
+import com.github.jmlb23.mediumclone.Ambients.LocalStore
 import com.github.jmlb23.mediumclone.data.models.Article
 import com.github.jmlb23.mediumclone.data.models.Profile
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -24,10 +24,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun FeedItem(art: Article) {
+fun FeedItem(art: Article, controller: NavHostController) {
+    val store = LocalStore.current
+
     Row(modifier = Modifier.padding(5.dp)) {
         CoilImage(
-            data = art.author.image as Any,
+            data = art.author.image,
             "Avatar",
             modifier = Modifier
                 .border(
@@ -37,7 +39,7 @@ fun FeedItem(art: Article) {
                 .padding(10.dp)
                 .size(40.dp, 40.dp)
                 .clip(CircleShape)
-                .border(BorderStroke(2.dp, Color.Black),shape = CircleShape),
+                .border(BorderStroke(2.dp, Color.Black), shape = CircleShape),
             contentScale = ContentScale.Fit
         )
         Column(
@@ -53,14 +55,13 @@ fun FeedItem(art: Article) {
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    imageVector = Icons.Filled.Favorite, tint = Color.Black,
-                    contentDescription = "Favorite",
-                    modifier = Modifier
-                        .background(Color.White, shape = RectangleShape)
-                        .padding(horizontal = 5.dp)
-                        .size(24.dp)
-                )
+                FavButton{
+                    store.state().token?.let {
+
+                    } ?: run {
+                        controller.navigate("/profile")
+                    }
+                }
             }
             Column {
                 Text(text = art.title, style = MaterialTheme.typography.body1)
@@ -86,6 +87,7 @@ fun FeedItemPreview() {
             true,
             0,
             author = Profile("jmlb23", "a bio", "", false)
-        )
+        ),
+        controller = rememberNavController()
     )
 }

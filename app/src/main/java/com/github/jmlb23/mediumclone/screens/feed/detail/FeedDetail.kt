@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -26,7 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.github.jmlb23.mediumclone.Ambients.LocalCoroutineScope
 import com.github.jmlb23.mediumclone.Ambients.LocalStore
-import com.github.jmlb23.mediumclone.components.CommentItem
+import com.github.jmlb23.mediumclone.screens.feed.components.CommentItem
 import com.github.jmlb23.mediumclone.state.AppActions
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.Dispatchers
