@@ -12,7 +12,7 @@ import androidx.navigation.compose.navigate
 import com.github.jmlb23.mediumclone.data.models.Article
 
 @Composable
-fun FeedList(feeds: List<Article>, controller: NavHostController,add: () -> Unit) {
+fun FeedList(feeds: List<Article>, controller: NavHostController, add: @Composable () -> Unit) {
     LazyColumn {
         items(feeds.size) {
             Box(modifier = Modifier.clickable(onClick = { controller.navigate("/feed/${feeds[it].slug}") })) {
@@ -20,10 +20,7 @@ fun FeedList(feeds: List<Article>, controller: NavHostController,add: () -> Unit
             }
         }
         item {
-            SideEffect {
-                add()
-
-            }
+            add()
         }
     }
 }

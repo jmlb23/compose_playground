@@ -17,11 +17,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.github.jmlb23.mediumclone.R
 import com.github.jmlb23.mediumclone.data.models.Article
 import com.github.jmlb23.mediumclone.data.models.Profile
-import com.github.jmlb23.mediumclone.ui.typography
 import dev.chrisbanes.accompanist.coil.CoilImage
 import java.text.SimpleDateFormat
 import java.util.*

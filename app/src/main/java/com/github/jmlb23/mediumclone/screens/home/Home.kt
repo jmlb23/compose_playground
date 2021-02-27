@@ -9,12 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.*
-import com.github.jmlb23.mediumclone.AmbientCoroutineScope
-import com.github.jmlb23.mediumclone.AmbientStore
 import com.github.jmlb23.mediumclone.screens.feed.Feed
 import com.github.jmlb23.mediumclone.screens.feed.detail.FeedDetail
-import com.github.jmlb23.mediumclone.state.AppActions
-import kotlinx.coroutines.launch
 
 @Composable
 fun Home() {
@@ -23,7 +19,7 @@ fun Home() {
     Column (modifier = Modifier.fillMaxWidth(1f).then(Modifier.fillMaxHeight(1f)),verticalArrangement = Arrangement.Bottom) {
         Box(modifier = Modifier.fillMaxWidth(1f).weight(8f,true)){
             NavHost(navController = controller, startDestination = "/feed") {
-                composable("/feed/{slug}") { FeedDetail(it.arguments?.getString("slug") ?: "") }
+                composable("/feed/{slug}") { FeedDetail(it.arguments?.getString("slug") ?: "", controller) }
                 composable("/feed") { Feed(controller) }
                 composable("/example2") { Text("example2", color = Color.Black) }
                 composable("/example3") { Text("example3", color = Color.Black) }

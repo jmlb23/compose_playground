@@ -45,7 +45,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion Dependencies.Versions.ComposeVersion
-        kotlinCompilerVersion Dependencies.Versions.KotlinVersion
     }
 
     configurations {

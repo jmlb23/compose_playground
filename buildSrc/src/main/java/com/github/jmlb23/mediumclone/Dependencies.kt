@@ -4,8 +4,8 @@ object Dependencies {
 
     object Versions {
         const val RetrofitVersion = "2.9.0"
-        const val ComposeVersion = "1.0.0-alpha12"
-        const val ComposeNavigation = "1.0.0-alpha07"
+        const val ComposeVersion = "1.0.0-beta01"
+        const val ComposeNavigation = "1.0.0-alpha08"
         const val AndroidxCore = "1.3.2"
         const val AppCompat = "1.2.0"
         const val Lifecycle = "2.3.0-beta01"
@@ -73,7 +73,7 @@ object Dependencies {
     }
 
     object Coil {
-        private const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.5.1"
+        private const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.6.0"
         val getAll = listOf(coil)
     }
 }

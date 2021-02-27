@@ -3,11 +3,14 @@ package com.github.jmlb23.mediumclone
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.github.jmlb23.mediumclone.Ambients.LocalCoroutineScope
+import com.github.jmlb23.mediumclone.Ambients.LocalNavHostController
+import com.github.jmlb23.mediumclone.Ambients.LocalStore
 import com.github.jmlb23.mediumclone.data.Factories
 import com.github.jmlb23.mediumclone.screens.home.Home
 import com.github.jmlb23.mediumclone.screens.splash.Splash
@@ -41,10 +44,10 @@ class MainActivity : AppCompatActivity() {
         setContent {
             MediumCloneTheme {
                 val controller = rememberNavController()
-                Providers(
-                    AmbientNavHostController provides controller,
-                    AmbientCoroutineScope provides lifecycleScope + CoroutineExceptionHandler({ ctx, ex -> throw  ex }),
-                    AmbientStore provides store
+                CompositionLocalProvider(
+                    LocalNavHostController provides controller,
+                    LocalCoroutineScope provides lifecycleScope + CoroutineExceptionHandler({ ctx, ex -> throw  ex }),
+                    LocalStore provides store
                 ) {
                     NavHost(navController = controller, startDestination = "/splash", builder = {
                         composable("/splash") { Splash() }

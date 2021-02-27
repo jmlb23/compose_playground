@@ -10,19 +10,18 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
-import com.github.jmlb23.mediumclone.AmbientCoroutineScope
-import com.github.jmlb23.mediumclone.AmbientNavHostController
+import com.github.jmlb23.mediumclone.Ambients.LocalCoroutineScope
+import com.github.jmlb23.mediumclone.Ambients.LocalNavHostController
 import com.github.jmlb23.mediumclone.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun Splash() {
-    val navHostController = AmbientNavHostController.current
-    val coroutineScope = AmbientCoroutineScope.current
+    val navHostController = LocalNavHostController.current
+    val coroutineScope = LocalCoroutineScope.current
 
     Box(modifier = Modifier.background(MaterialTheme.colors.primary).fillMaxWidth(1f).fillMaxHeight(1f)) {
         Image(painter = painterResource(
