@@ -4,6 +4,8 @@ import android.util.Log
 import com.github.jmlb23.mediumclone.data.apis.ArticlesApi
 import com.github.jmlb23.mediumclone.data.apis.CommentsApi
 import com.github.jmlb23.mediumclone.data.apis.DefaultApi
+import com.github.jmlb23.mediumclone.data.apis.UserAndAuthenticationApi
+import com.github.jmlb23.mediumclone.data.models.User
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,4 +23,5 @@ object Factories {
     fun getDefaultService() = retrofit.create(DefaultApi::class.java)
     fun getArticlesService() = retrofit.create(ArticlesApi::class.java)
     fun getCommentsService() = retrofit.create(CommentsApi::class.java)
+    fun getUserAndAuthService() = retrofit.create(UserAndAuthenticationApi::class.java)
 }

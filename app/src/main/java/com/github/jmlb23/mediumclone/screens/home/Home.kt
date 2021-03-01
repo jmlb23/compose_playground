@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.*
 import com.github.jmlb23.mediumclone.Ambients
 import com.github.jmlb23.mediumclone.component.LoginGuard
+import com.github.jmlb23.mediumclone.screens.favs.Favorites
 import com.github.jmlb23.mediumclone.screens.feed.Feed
 import com.github.jmlb23.mediumclone.screens.feed.detail.FeedDetail
 import com.github.jmlb23.mediumclone.screens.login.Login
@@ -34,10 +35,12 @@ fun Home() {
                         controller
                     )
                 }
-                composable("/feed") { Feed(controller) }
-                composable("/example2") {
+                composable("/feed") {
+                    Feed(controller)
+                }
+                composable("/favorites") {
                     LoginGuard(nav = controller) {
-                        Text("example4", color = Color.Black)
+                        Favorites(controller = controller)
                     }
                 }
                 composable("/example3") {
@@ -51,10 +54,11 @@ fun Home() {
                     }
                 }
                 composable("/profile") {
-                    store.state().token?.let {
+                    val token = store.select { it.user?.token }.collectAsState(initial = null)
+                    token.value?.let {
                         Text("profile", color = Color.Black)
                     } ?: run {
-                        Login(controller = controller)
+                        Login()
                     }
                 }
             }
@@ -66,8 +70,8 @@ fun Home() {
                 onClick = { controller.navigate("/feed") })
             BottomNavigationItem(
                 icon = { Icon(Icons.Default.Favorite, "Favs") },
-                selected = curentRoute == "/example2",
-                onClick = { controller.navigate("/example2") })
+                selected = curentRoute == "/favorites",
+                onClick = { controller.navigate("/favorites") })
             BottomNavigationItem(
                 icon = { Icon(Icons.Default.Add, "Add") },
                 selected = curentRoute == "/example3",

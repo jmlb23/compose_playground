@@ -1,6 +1,8 @@
 package com.github.jmlb23.mediumclone.state
 
 import android.util.Log
+import com.github.jmlb23.mediumclone.data.models.LoginUser
+import com.github.jmlb23.mediumclone.data.models.LoginUserRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
@@ -79,6 +81,56 @@ val middlewareDetailComment: Middleware<AppState, AppActions, AppEnviroment> =
         }
     }
 
+
+val middlewareLogin: Middleware<AppState, AppActions, AppEnviroment> =
+    {
+        { store ->
+            { dispatcher ->
+                { action ->
+                    withContext(Dispatchers.IO) {
+                        when (action) {
+                            is AppActions.LoginActions.SendLoginAction -> {
+                                val user = store.enviroment.factories.getUserAndAuthService()
+                                    .login(
+                                        LoginUserRequest(
+                                            LoginUser(
+                                                action.username,
+                                                action.password
+                                            )
+                                        )
+                                    )
+                                it(AppActions.LoginActions.SetCurrentUser(user.user))
+                            }
+                            else -> dispatcher(action)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+val middlewareCallFavs: Middleware<AppState, AppActions, AppEnviroment> =
+    {
+        { store ->
+            { dispatcher ->
+                { action ->
+                    val username = store.state().user?.username ?: ""
+
+                    withContext(Dispatchers.IO) {
+                        when (action) {
+                            is AppActions.FavoritesActions.GetFavorites -> {
+                                val articles = store.enviroment.factories.getArticlesService()
+                                    .getArticles(favorited = username,offset = 0,limit = 10)
+                                it(AppActions.FavoritesActions.SetFavorites(articles.articles))
+                            }
+                            else -> dispatcher(action)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 val middlewareLogger: Middleware<AppState, AppActions, AppEnviroment> =
     {
         { store ->
@@ -87,7 +139,7 @@ val middlewareLogger: Middleware<AppState, AppActions, AppEnviroment> =
                     withContext(Dispatchers.IO) {
                         Log.d(
                             "middlewareLogger",
-                            "action: ${action::class.simpleName} page: ${store.state().feed.page}"
+                            "action: ${action::class.simpleName} page: ${store.state().feed.page} user: ${store.state().user}"
                         )
                         dispatcher(action)
                     }

@@ -20,7 +20,7 @@ fun <S : Any, A : Any, E> createStore(
 
         suspend fun defaultDispatch(action: A) {
             val state = reducer(_state.value, action)
-            _state.emit(state)
+            _state.tryEmit(state)
         }
 
         override val dispatch: Dispatch<A> = _dispatch

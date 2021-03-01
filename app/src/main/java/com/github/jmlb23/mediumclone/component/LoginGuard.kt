@@ -17,18 +17,18 @@ import com.github.jmlb23.mediumclone.Ambients
 @Composable
 fun LoginGuard(nav: NavHostController, component: @Composable () -> Unit) {
     val store = Ambients.LocalStore.current
-    val token = store.select { it.token }.collectAsState(initial = null)
-    Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        token.value?.let {
-            component()
-        } ?: run {
-            TextButton(onClick = {
-                nav.navigate("/profile")
-            }) {
+    val token = store.select { it.user?.token }.collectAsState(initial = null)
+    token.value?.let {
+        component()
+    } ?: run {
+        TextButton(onClick = {
+            nav.navigate("/profile")
+        }) {
+            Column(
+                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(text = "Login to view content")
             }
         }

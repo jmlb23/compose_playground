@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity() {
                 middlewarePagination,
                 middlewareDetailArticle,
                 middlewareDetailComment,
+                middlewareLogin,
+                middlewareCallFavs,
                 middlewareLogger,
             )
         )

@@ -56,7 +56,7 @@ fun FeedItem(art: Article, controller: NavHostController) {
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 FavButton{
-                    store.state().token?.let {
+                    store.state().user?.token?.let {
 
                     } ?: run {
                         controller.navigate("/profile")
