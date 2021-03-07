@@ -11,8 +11,10 @@ interface Repository<K, V, O> {
 }
 
 fun <K, V, O> createRepo(
-    adder: suspend (V) -> O, getter: suspend (K) -> V,
-    remover: suspend (K) -> O, filterer: suspend ((V) -> Boolean) -> Flow<List<V>>,
+    adder: suspend (V) -> O,
+    getter: suspend (K) -> V,
+    remover: suspend (K) -> O,
+    filterer: suspend ((V) -> Boolean) -> Flow<List<V>>,
     replacer: suspend (K, V) -> O
 ) = object : Repository<K, V, O> {
     override suspend fun add(v: V): O =

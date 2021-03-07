@@ -26,5 +26,7 @@ sealed class AppActions(open val name: String) {
     sealed class FavoritesActions : AppActions("FavoritesActions"){
         object GetFavorites : FavoritesActions()
         data class SetFavorites(val favs: List<Article>) : FavoritesActions()
+        data class AddFav(val slug: String) : FavoritesActions()
+        data class RemoveFav(val slug: String) : FavoritesActions()
     }
 }

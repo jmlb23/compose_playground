@@ -1,5 +1,8 @@
 package com.github.jmlb23.mediumclone.data.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class UpdateUser(
     var email: String? = null,
     var token: String? = null,

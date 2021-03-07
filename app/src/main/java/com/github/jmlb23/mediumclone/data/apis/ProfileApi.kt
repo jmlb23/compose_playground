@@ -1,10 +1,7 @@
 package com.github.jmlb23.mediumclone.data.apis
 
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
 import com.github.jmlb23.mediumclone.data.models.*
+import retrofit2.http.*
 
 
 @JvmSuppressWildcards
@@ -16,7 +13,7 @@ interface ProfileApi {
     )
     @POST("profiles/{username}/follow")
     suspend fun followUserByUsername(
-        @retrofit2.http.Path("username") username: String
+        @Path("username") username: String
     ): ProfileResponse
 
     @Headers(
@@ -25,7 +22,7 @@ interface ProfileApi {
     )
     @GET("profiles/{username}")
     suspend fun getProfileByUsername(
-        @retrofit2.http.Path("username") username: String
+        @Path("username") username: String
     ): ProfileResponse
 
     @Headers(
@@ -34,6 +31,6 @@ interface ProfileApi {
     )
     @DELETE("profiles/{username}/follow")
     suspend fun unfollowUserByUsername(
-        @retrofit2.http.Path("username") username: String
+        @Path("username") username: String
     ): ProfileResponse
 }

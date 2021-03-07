@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,13 +22,19 @@ import kotlinx.coroutines.launch
 @Composable
 fun Splash() {
     val navHostController = LocalNavHostController.current
-    val coroutineScope = LocalCoroutineScope.current
+    val coroutineScope = rememberCoroutineScope()
 
-    Box(modifier = Modifier.background(MaterialTheme.colors.primary).fillMaxWidth(1f).fillMaxHeight(1f)) {
+    Box(modifier = Modifier
+        .background(MaterialTheme.colors.primary)
+        .fillMaxWidth(1f)
+        .fillMaxHeight(1f)) {
         Image(painter = painterResource(
                 R.drawable.ic_launcher_foreground
             ),"",
-            modifier = Modifier.height(100.dp).width(100.dp).align(Alignment.Center),
+            modifier = Modifier
+                .height(100.dp)
+                .width(100.dp)
+                .align(Alignment.Center),
         )
         Text(text = "Version 1.0.0",modifier = Modifier.align(Alignment.BottomCenter),color = MaterialTheme.colors.primaryVariant)
     }

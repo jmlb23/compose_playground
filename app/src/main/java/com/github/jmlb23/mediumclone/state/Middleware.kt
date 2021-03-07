@@ -114,14 +114,22 @@ val middlewareCallFavs: Middleware<AppState, AppActions, AppEnviroment> =
         { store ->
             { dispatcher ->
                 { action ->
-                    val username = store.state().user?.username ?: ""
+                    val user = store.state().user
 
                     withContext(Dispatchers.IO) {
                         when (action) {
                             is AppActions.FavoritesActions.GetFavorites -> {
                                 val articles = store.enviroment.factories.getArticlesService()
-                                    .getArticles(favorited = username,offset = 0,limit = 10)
+                                    .getArticles(favorited = user?.username, offset = 0, limit = 10)
                                 it(AppActions.FavoritesActions.SetFavorites(articles.articles))
+                            }
+                            is AppActions.FavoritesActions.AddFav -> {
+                                store.enviroment.factories.getFavoritesService()
+                                    .createArticleFavorite("Token ${user?.token}", action.slug)
+                            }
+                            is AppActions.FavoritesActions.RemoveFav -> {
+                                store.enviroment.factories.getFavoritesService()
+                                    .deleteArticleFavorite("Token ${user?.token}", action.slug)
                             }
                             else -> dispatcher(action)
                         }

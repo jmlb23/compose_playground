@@ -1,7 +1,8 @@
 package com.github.jmlb23.mediumclone.data.models
 
-import com.github.jmlb23.mediumclone.data.models.Comment
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SingleCommentResponse(
       var comment: Comment
 )

@@ -1,6 +1,7 @@
 package com.github.jmlb23.mediumclone
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Text
@@ -17,9 +18,9 @@ import com.github.jmlb23.mediumclone.screens.home.Home
 import com.github.jmlb23.mediumclone.screens.splash.Splash
 import com.github.jmlb23.mediumclone.state.*
 import com.github.jmlb23.mediumclone.ui.MediumCloneTheme
-import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.plus
+import kotlinx.serialization.json.Json
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,8 +31,14 @@ class MainActivity : AppCompatActivity() {
             initalState = AppState(),
             appEnviroment = AppEnviroment(
                 Factories,
-                scope = lifecycleScope + CoroutineExceptionHandler({ ctx, ex -> throw  ex }),
-                jsonSerializer = GsonBuilder().setPrettyPrinting().create()
+                scope = lifecycleScope + CoroutineExceptionHandler({ ctx, ex ->
+                    Log.e(
+                        "Error",
+                        ex.message,
+                        ex
+                    )
+                }),
+                jsonSerializer = Json
             ),
             reducer = ::mainReducer,
             middleware =

@@ -3,6 +3,7 @@ import com.github.jmlb23.mediumclone.Dependencies
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
 }
 
 android {

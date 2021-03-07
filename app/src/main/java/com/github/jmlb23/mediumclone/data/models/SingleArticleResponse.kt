@@ -1,7 +1,7 @@
 package com.github.jmlb23.mediumclone.data.models
+import kotlinx.serialization.Serializable
 
-import com.github.jmlb23.mediumclone.data.models.Article
-
+@Serializable
 data class SingleArticleResponse(
       var article: Article
 )

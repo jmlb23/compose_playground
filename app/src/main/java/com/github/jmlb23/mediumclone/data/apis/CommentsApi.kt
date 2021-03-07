@@ -1,10 +1,7 @@
 package com.github.jmlb23.mediumclone.data.apis
 
 import com.github.jmlb23.mediumclone.data.models.*
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface CommentsApi {
 
@@ -13,8 +10,8 @@ interface CommentsApi {
     )
     @POST("articles/{slug}/comments")
     suspend fun createArticleComment(
-        @retrofit2.http.Path("slug") slug: String,
-        @retrofit2.http.Body comment: NewCommentRequest
+        @Path("slug") slug: String,
+        @Body comment: NewCommentRequest
     ): SingleCommentResponse
 
     @Headers(
@@ -22,8 +19,8 @@ interface CommentsApi {
     )
     @DELETE("articles/{slug}/comments/{id}")
     suspend fun deleteArticleComment(
-        @retrofit2.http.Path("slug") slug: String,
-        @retrofit2.http.Path("id") id: Int
+        @Path("slug") slug: String,
+        @Path("id") id: Int
     ): Unit
 
     @Headers(
@@ -31,6 +28,6 @@ interface CommentsApi {
     )
     @GET("articles/{slug}/comments")
     suspend fun getArticleComments(
-        @retrofit2.http.Path("slug") slug: String
+        @Path("slug") slug: String
     ): MultipleCommentsResponse
 }

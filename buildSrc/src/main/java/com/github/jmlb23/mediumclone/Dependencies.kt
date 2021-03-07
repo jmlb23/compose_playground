@@ -21,10 +21,10 @@ object Dependencies {
 
     object Retrofit {
         private const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.RetrofitVersion}"
-        private const val gson = "com.squareup.retrofit2:converter-gson:${Versions.RetrofitVersion}"
+        private const val json = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
         private const val okHttpInterceptor ="com.squareup.okhttp3:logging-interceptor:${Versions.Interceptor}"
 
-        val getAll = listOf(retrofit, gson, okHttpInterceptor)
+        val getAll = listOf(retrofit, json, okHttpInterceptor)
     }
 
     object Compose {

@@ -13,7 +13,7 @@ import kotlinx.datetime.toLocalDateTime
 @Composable
 fun CommentItem(comment: Comment) {
     Column {
-        Text(text = comment.author.username)
+        Text(text = comment.author.username ?: "")
         Text(text = comment.body)
     }
 }
@@ -25,8 +25,8 @@ fun Comment_Preview() {
     CommentItem(
         comment = Comment(
             5,
-            Clock.System.now().toLocalDateTime(TimeZone.UTC),
-            Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            Clock.System.now().toLocalDateTime(TimeZone.UTC).toString(),
+            Clock.System.now().toLocalDateTime(TimeZone.UTC).toString(),
             "body",
             author = Profile("jmlb23", "my bio", "", false)
         )

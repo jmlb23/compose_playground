@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -36,7 +37,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun FeedDetail(slug: String, navigator: NavHostController) {
     val store = LocalStore.current
-    val coroutineContext = LocalCoroutineScope.current
+    val coroutineContext = rememberCoroutineScope()
     val article =
         store.select { it.detail.article }.flowOn(Dispatchers.IO).collectAsState(initial = null)
     val comments = store.select { it.detail.comments }.flowOn(Dispatchers.IO)

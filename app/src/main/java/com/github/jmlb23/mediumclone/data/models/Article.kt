@@ -1,7 +1,8 @@
 package com.github.jmlb23.mediumclone.data.models
 
-import com.github.jmlb23.mediumclone.data.models.Profile
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Article(
       var slug: String,
       var title: String,

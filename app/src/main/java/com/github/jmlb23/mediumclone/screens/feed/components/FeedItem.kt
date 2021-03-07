@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,17 +20,20 @@ import androidx.navigation.compose.rememberNavController
 import com.github.jmlb23.mediumclone.Ambients.LocalStore
 import com.github.jmlb23.mediumclone.data.models.Article
 import com.github.jmlb23.mediumclone.data.models.Profile
+import com.github.jmlb23.mediumclone.state.AppActions
 import dev.chrisbanes.accompanist.coil.CoilImage
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
 fun FeedItem(art: Article, controller: NavHostController) {
     val store = LocalStore.current
+    val scope = rememberCoroutineScope()
 
     Row(modifier = Modifier.padding(5.dp)) {
         CoilImage(
-            data = art.author.image,
+            data = art.author.image ?: "",
             "Avatar",
             modifier = Modifier
                 .border(
@@ -50,14 +54,19 @@ fun FeedItem(art: Article, controller: NavHostController) {
             Row {
                 Row {
                     Column(modifier = Modifier.align(Alignment.CenterVertically)) {
-                        Text(text = art.author.username, style = MaterialTheme.typography.h5)
+                        Text(text = art.author.username ?: "", style = MaterialTheme.typography.h5)
                         Text(text = art.updatedAt, style = MaterialTheme.typography.subtitle1)
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                FavButton{
-                    store.state().user?.token?.let {
-
+                FavButton(art.favorited) {
+                    store.state().user?.token?.let { _ ->
+                        scope.launch {
+                            if (!art.favorited)
+                                store.dispatch(AppActions.FavoritesActions.AddFav(art.slug))
+                            else
+                                store.dispatch(AppActions.FavoritesActions.RemoveFav(art.slug))
+                        }
                     } ?: run {
                         controller.navigate("/profile")
                     }
