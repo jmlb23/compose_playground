@@ -1,5 +1,6 @@
 package com.github.jmlb23.mediumclone.screens.favs
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import com.github.jmlb23.mediumclone.Ambients
@@ -16,7 +17,6 @@ fun Favorites(controller: NavHostController) {
         .select { it.favorites.article }.distinctUntilChanged()
         .collectAsState(initial = emptyList())
     val scope = rememberCoroutineScope()
-
 
     FeedList(feeds = feed.value, controller = controller) {
         scope.launch {

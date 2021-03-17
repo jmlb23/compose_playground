@@ -10,6 +10,7 @@ sealed class AppActions(open val name: String) {
         object ChangePageAction : FeedActions("ChangePageAction")
         object GetPages : FeedActions("ChangePageAction")
         data class SetPagesAction(val value: List<Article>) : FeedActions("SetPagesAction")
+        data class SetPositionAction(val position: Int) : FeedActions("SetPostionAction")
     }
 
     sealed class DetailActions : AppActions("DetailActions") {
@@ -18,12 +19,12 @@ sealed class AppActions(open val name: String) {
         data class SetComments(val value: List<Comment>) : DetailActions()
     }
 
-    sealed class LoginActions : AppActions("LoginActions"){
-        data class SendLoginAction(val username: String, val password: String): LoginActions()
-        data class SetCurrentUser(val user: User): LoginActions()
+    sealed class LoginActions : AppActions("LoginActions") {
+        data class SendLoginAction(val username: String, val password: String) : LoginActions()
+        data class SetCurrentUser(val user: User) : LoginActions()
     }
 
-    sealed class FavoritesActions : AppActions("FavoritesActions"){
+    sealed class FavoritesActions : AppActions("FavoritesActions") {
         object GetFavorites : FavoritesActions()
         data class SetFavorites(val favs: List<Article>) : FavoritesActions()
         data class AddFav(val slug: String) : FavoritesActions()

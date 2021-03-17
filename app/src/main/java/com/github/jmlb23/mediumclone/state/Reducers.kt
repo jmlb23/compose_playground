@@ -47,6 +47,7 @@ fun reducerScreenData(partialState: FeedState, actions: AppActions): FeedState =
             val new = old + 1
             partialState.copy(page = new)
         }
+        is AppActions.FeedActions.SetPositionAction -> partialState.copy(position = actions.position)
         is AppActions.FeedActions.SetPagesAction -> partialState.copy(article = partialState.article + (actions.value))
         else -> partialState
     }

@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.navigate
-import com.github.jmlb23.mediumclone.Ambients.LocalCoroutineScope
 import com.github.jmlb23.mediumclone.Ambients.LocalNavHostController
 import com.github.jmlb23.mediumclone.R
 import kotlinx.coroutines.delay

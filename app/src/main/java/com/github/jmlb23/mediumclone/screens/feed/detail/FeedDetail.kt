@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.github.jmlb23.mediumclone.Ambients.LocalCoroutineScope
 import com.github.jmlb23.mediumclone.Ambients.LocalStore
 import com.github.jmlb23.mediumclone.screens.feed.components.CommentItem
 import com.github.jmlb23.mediumclone.state.AppActions
