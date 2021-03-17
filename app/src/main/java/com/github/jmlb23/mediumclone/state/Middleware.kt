@@ -126,10 +126,12 @@ val middlewareCallFavs: Middleware<AppState, AppActions, AppEnviroment> =
                             is AppActions.FavoritesActions.AddFav -> {
                                 store.enviroment.factories.getFavoritesService()
                                     .createArticleFavorite("Token ${user?.token}", action.slug)
+                                it(AppActions.FavoritesActions.GetFavorites)
                             }
                             is AppActions.FavoritesActions.RemoveFav -> {
                                 store.enviroment.factories.getFavoritesService()
                                     .deleteArticleFavorite("Token ${user?.token}", action.slug)
+                                it(AppActions.FavoritesActions.GetFavorites)
                             }
                             else -> dispatcher(action)
                         }

@@ -15,6 +15,9 @@ import com.github.jmlb23.mediumclone.screens.favs.Favorites
 import com.github.jmlb23.mediumclone.screens.feed.Feed
 import com.github.jmlb23.mediumclone.screens.feed.detail.FeedDetail
 import com.github.jmlb23.mediumclone.screens.login.Login
+import com.github.jmlb23.mediumclone.state.AppActions
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 @Composable
 fun Home() {
@@ -24,11 +27,19 @@ fun Home() {
     val store = Ambients.LocalStore.current
 
     Column(
-        modifier = Modifier.fillMaxWidth(1f).then(Modifier.fillMaxHeight(1f)),
+        modifier = Modifier
+            .fillMaxWidth(1f)
+            .then(Modifier.fillMaxHeight(1f)),
         verticalArrangement = Arrangement.Bottom
     ) {
-        Box(modifier = Modifier.fillMaxWidth(1f).weight(8f, true)) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .weight(8f, true)
+        ) {
             NavHost(navController = controller, startDestination = "/feed") {
+
                 composable("/feed/{slug}") {
                     FeedDetail(
                         it.arguments?.getString("slug") ?: "",
@@ -40,7 +51,7 @@ fun Home() {
                 }
                 composable("/favorites") {
                     LoginGuard(nav = controller) {
-                        Favorites(controller = controller)
+                        Favorites(controller)
                     }
                 }
                 composable("/example3") {
@@ -86,7 +97,6 @@ fun Home() {
                 onClick = { controller.navigate("/profile") })
         }
     }
-
 }
 
 
