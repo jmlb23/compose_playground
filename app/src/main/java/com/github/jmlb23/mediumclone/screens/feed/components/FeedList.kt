@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 fun FeedList(feeds: List<Article>, controller: NavHostController, add: suspend () -> Unit) {
     val scope = rememberCoroutineScope()
     val store = LocalStore.current
+    //TODO save position on store best practice?
     val position = store.select { it.feed.position }.collectAsState(initial = 0)
 
     LazyColumn(state = LazyListState(firstVisibleItemIndex = position.value)) {
@@ -44,6 +45,10 @@ fun FeedList(feeds: List<Article>, controller: NavHostController, add: suspend (
             ) {
                 Button(onClick = {
                     scope.launch(Dispatchers.IO) {
+                        store.dispatch(AppActions.FeedActions.SetPositionAction((feeds
+                            .size
+                            .takeIf { it > 0 }
+                            ?.let { it + 10 } ?: 0)) )
                         add()
                     }
                 }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
